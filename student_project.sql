@@ -1,3 +1,7 @@
+-- SQL Student Database Project
+-- Created by: Anjali Rawat
+-- Purpose: Practice basic SQL operations for Data Analytics portfolio
+
 create database anjali_da;
 use anjali_da;
 -- create a table 
@@ -26,4 +30,5 @@ city varchar(50)
  
  -- select last two rows
  select*from student limit 2 offset 2;
+
  select * from student limit 2 offset 1;
