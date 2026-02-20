@@ -6,7 +6,8 @@ This repository contains my SQL practice work including database creation, table
 
 This project contains SQL queries practiced on the **World** and **Sakila** databases using MySQL.
 
-The focus of this practice was:
+The focus of this 
+practice was:
 
 - Data Filtering
 - OR & IN Operators
