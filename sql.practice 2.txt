@@ -1,0 +1,289 @@
+/* =========================================================
+   DATABASE: WORLD
+========================================================= */
+
+-- Create and Use Database
+CREATE DATABASE world;
+USE world;
+
+-- View All Countries
+SELECT * FROM country;
+
+------------------------------------------------------------
+-- 1. OR Operator
+------------------------------------------------------------
+
+SELECT *
+FROM country
+WHERE continent = 'Asia'
+   OR continent = 'Africa'
+   OR continent = 'Europe';
+
+------------------------------------------------------------
+-- 2. IN Operator
+-- Multiple conditions on same column (Better than OR)
+------------------------------------------------------------
+
+SELECT *
+FROM country
+WHERE continent IN ('Asia', 'Africa', 'Europe');
+
+------------------------------------------------------------
+-- 3. BETWEEN Operator
+------------------------------------------------------------
+
+-- Life Expectancy between 40 and 55
+SELECT name, continent, LifeExpectancy
+FROM country
+WHERE LifeExpectancy BETWEEN 40 AND 55
+ORDER BY LifeExpectancy;
+
+-- Country names alphabetically between China and India
+SELECT *
+FROM country
+WHERE name BETWEEN 'China' AND 'India'
+ORDER BY name;
+
+------------------------------------------------------------
+-- 4. Aggregate Functions
+------------------------------------------------------------
+
+-- Total World Population (in lakhs)
+SELECT SUM(Population / 100000) AS total_world_pop
+FROM country;
+
+-- Average Population
+SELECT ROUND(AVG(Population / 100000), 2) AS avg_world_pop
+FROM country;
+
+-- Multiple Aggregate Calculations
+SELECT 
+    ROUND(SUM(Population / 1000000), 2) AS total_world_pop_million,
+    ROUND(AVG(LifeExpectancy), 2) AS avg_life_expectancy,
+    ROUND(AVG(GNP) / 1000, 2) AS avg_gnp_thousand,
+    ROUND(SUM(SurfaceArea) / 1000000, 2) AS total_surface_area_million
+FROM country;
+
+------------------------------------------------------------
+-- 5. COUNT Function
+------------------------------------------------------------
+
+SELECT 
+    COUNT(DISTINCT continent) AS no_of_continents,
+    COUNT(DISTINCT name) AS no_of_countries
+FROM country;
+
+------------------------------------------------------------
+-- 6. GROUP BY
+------------------------------------------------------------
+
+SELECT
+    continent,
+    ROUND(SUM(Population / 1000000), 2) AS total_continent_pop_million,
+    ROUND(AVG(LifeExpectancy), 2) AS avg_life_expectancy,
+    ROUND(AVG(GNP) / 1000, 2) AS avg_gnp_thousand,
+    ROUND(SUM(SurfaceArea) / 1000000, 2) AS total_surface_area_million
+FROM country
+GROUP BY continent;
+
+------------------------------------------------------------
+-- 7. HAVING Clause
+------------------------------------------------------------
+
+SELECT
+    continent,
+    ROUND(SUM(Population / 1000000), 2) AS total_continent_pop_million,
+    ROUND(AVG(LifeExpectancy), 2) AS avg_life_expectancy,
+    ROUND(AVG(GNP) / 1000, 2) AS avg_gnp_thousand,
+    ROUND(SUM(SurfaceArea) / 1000000, 2) AS total_surface_area_million
+FROM country
+GROUP BY continent
+HAVING total_surface_area_million > 25;
+
+------------------------------------------------------------
+-- 8. Continent-wise Population Density & GNP Per Capita
+-- (Corrected using SUM for proper aggregation)
+------------------------------------------------------------
+
+SELECT
+    continent,
+    ROUND(SUM(Population) / SUM(SurfaceArea), 2) AS population_density,
+    ROUND(SUM(GNP) * 1000000 / SUM(Population), 2) AS gnp_per_capita
+FROM country
+GROUP BY continent;
+
+
+
+/* =========================================================
+   DATABASE: SAKILA
+========================================================= */
+
+CREATE DATABASE sakila;
+USE sakila;
+
+------------------------------------------------------------
+-- 1. LIKE Operator
+------------------------------------------------------------
+
+-- Film ID equal to 5
+SELECT *
+FROM sakila.film
+WHERE film_id = 5;
+
+-- Title starts with 'A'
+SELECT *
+FROM sakila.film
+WHERE title LIKE 'A%';
+
+-- Title ends with 'a'
+SELECT *
+FROM sakila.film
+WHERE title LIKE '%a';
+
+-- Title contains 'a'
+SELECT *
+FROM sakila.film
+WHERE title LIKE '%a%';
+
+-- Title does NOT contain 'a'
+SELECT *
+FROM sakila.film
+WHERE title NOT LIKE '%a%';
+
+-- Special features contain 'Deleted Scenes'
+SELECT *
+FROM sakila.film
+WHERE special_features LIKE '%Deleted Scenes%';
+
+-- Description contains 'drama'
+SELECT *
+FROM sakila.film
+WHERE description LIKE '%drama%';
+
+------------------------------------------------------------
+-- 2. Underscore (_) Wildcard
+-- Fixed number of characters
+------------------------------------------------------------
+
+-- 5 characters followed by 'a'
+SELECT *
+FROM sakila.film
+WHERE title LIKE '_____a';
+
+-- Actor first name: 4 characters + 'a'
+SELECT *
+FROM sakila.actor
+WHERE first_name LIKE '____a';
+
+-- Actor first name: 3 characters + 'k'
+SELECT *
+FROM sakila.actor
+WHERE first_name LIKE '___k';
+
+-- Actor first name: any length but 4 characters before 'e'
+SELECT *
+FROM sakila.actor
+WHERE first_name LIKE '%____e';
+
+-- Actor first name: 4 characters + 'e' + anything
+SELECT *
+FROM sakila.actor
+WHERE first_name LIKE '____e%';
+
+
+/* =========================================================
+   BUILT-IN FUNCTIONS – WORLD DATABASE
+========================================================= */
+
+USE world;
+
+------------------------------------------------------------
+-- 1. SUM Function
+------------------------------------------------------------
+
+-- Total World Population (in lakhs)
+SELECT 
+    SUM(Population / 100000) AS total_world_population_lakhs
+FROM country;
+
+
+------------------------------------------------------------
+-- 2. AVG Function
+------------------------------------------------------------
+
+-- Average World Population (Rounded)
+SELECT 
+    ROUND(AVG(Population / 100000), 2) AS avg_world_population_lakhs
+FROM country;
+
+
+------------------------------------------------------------
+-- 3. Multiple Aggregate Functions
+------------------------------------------------------------
+
+SELECT 
+    ROUND(SUM(Population / 1000000), 2) AS total_world_population_million,
+    ROUND(AVG(LifeExpectancy), 2) AS avg_life_expectancy,
+    ROUND(AVG(GNP) / 1000, 2) AS avg_gnp_thousand,
+    ROUND(SUM(SurfaceArea) / 1000000, 2) AS total_surface_area_million
+FROM country;
+
+
+------------------------------------------------------------
+-- 4. COUNT Function
+------------------------------------------------------------
+
+-- Total rows count (includes duplicates if any)
+SELECT 
+    COUNT(continent) AS total_continent_entries,
+    COUNT(name) AS total_country_entries
+FROM country;
+
+-- Count distinct continents and countries
+SELECT 
+    COUNT(DISTINCT continent) AS no_of_continents,
+    COUNT(DISTINCT name) AS no_of_countries
+FROM country;
+
+
+------------------------------------------------------------
+-- 5. GROUP BY – Continent Wise Summary
+------------------------------------------------------------
+
+SELECT
+    continent,
+    ROUND(SUM(Population / 1000000), 2) AS total_continent_population_million,
+    ROUND(AVG(LifeExpectancy), 2) AS avg_life_expectancy,
+    ROUND(AVG(GNP) / 1000, 2) AS avg_gnp_thousand,
+    ROUND(SUM(SurfaceArea) / 1000000, 2) AS total_surface_area_million
+FROM country
+GROUP BY continent;
+
+
+------------------------------------------------------------
+-- 6. HAVING Clause
+------------------------------------------------------------
+
+-- Continents with surface area > 25 million sq km
+SELECT
+    continent,
+    ROUND(SUM(Population / 1000000), 2) AS total_continent_population_million,
+    ROUND(AVG(LifeExpectancy), 2) AS avg_life_expectancy,
+    ROUND(AVG(GNP) / 1000, 2) AS avg_gnp_thousand,
+    ROUND(SUM(SurfaceArea) / 1000000, 2) AS total_surface_area_million
+FROM country
+GROUP BY continent
+HAVING total_surface_area_million > 25;
+
+
+------------------------------------------------------------
+-- 7. Continent-wise Population Density & GNP Per Capita
+-- (Corrected using SUM for proper aggregation)
+------------------------------------------------------------
+
+SELECT
+    continent,
+    ROUND(SUM(Population) / SUM(SurfaceArea), 2) AS population_density,
+    ROUND(SUM(GNP) * 1000000 / SUM(Population), 2) AS gnp_per_capita
+FROM country
+GROUP BY continent;
