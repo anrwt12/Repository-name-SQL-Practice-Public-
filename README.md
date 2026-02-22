@@ -135,11 +135,13 @@ Examples practiced:
 
 ---
 
-## 👩‍💻 Author
+##  Author
 
 Anjali Rawat  
 BSc Computer Science  
 Aspiring Data Analyst  
+
+
 
 Skills:
 - SQL
