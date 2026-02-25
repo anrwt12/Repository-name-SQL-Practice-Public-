@@ -1,0 +1,85 @@
+use sakila;
+select*from `sakila.address`;
+## left/right
+select city_id ,district, upper(left(district ,3)) New_dis , upper(right(district ,3)) Right_dis from `sakila.address`;
+
+##substring
+select* from `sakila.customer`;
+select first_name,last_name,email,substr(email,1 ,4) subs from `sakila.customer`;
+select first_name,last_name,email,substr(email,1 ,3) subs from `sakila.customer`;
+
+##trim/ltrim/Rtrim
+select *from `sakila.address`;
+select  district , trim(concat("      ", district,"      " )) new_dist from `sakila.address`;
+select  district , Rtrim(concat("      ", district,"      " )) new_dist from `sakila.address`;
+
+##Reverse
+select reverse("rawat");
+
+## lenght
+select * from `sakila.customer`;
+select first_name,email, length(email) as len_email from `sakila.customer`
+order by len_email desc ;
+
+
+##date and time
+use sakila;
+select* from `sakila.rental`;
+select current_date();
+select current_time();
+select now();
+
+select rental_id,rental_date, date(rental_date) as rental_date2 from `sakila.rental`;
+
+select rental_id,rental_date, date(rental_date) as rental_date2 ,
+time(rental_date) as rental_time
+from `sakila.rental`;
+
+select rental_id,rental_date,
+ day(rental_date) as rental_day 
+ from `sakila.rental`;
+
+select rental_id,rental_date,
+ day(rental_date) as rental_day ,
+Month(rental_date) as rental_Month,
+year(rental_date) as rental_year 
+ from `sakila.rental`;
+
+
+select rental_id,rental_date,
+ time(rental_date) as rental_time ,
+hour(rental_date) as rental_hour,
+minute(rental_date) as rental_min,
+second(rental_date) as rental_second
+ from `sakila.rental`;
+
+
+select* from `sakila.rental`;
+select rental_id,
+date(rental_date) as rental_date, date_add(date(rental_date), interval 5 day ) as Target_date from `sakila.rental`;
+
+ select* from `sakila.rental`;
+ select rental_id,rental_date,date(rental_date) as rental_date,
+ date(return_date) as return_date,
+ datediff(return_date,rental_date) as holding_days
+ from `sakila.rental`;
+
+ select customer_id,
+avg( datediff(return_date,rental_date)) as holding_days
+ from `sakila.rental`
+ group by customer_id;
+ 
+ 
+ 
+
+
+select customer_id,
+if(max(datediff(return_date, rental_date)) > 7, "Late", "Not-Late") as Return_Status
+from `sakila.rental`
+group by customer_id
+having Return_Status = "Late";
+                               
+                               
+                               
+                               
+                           
